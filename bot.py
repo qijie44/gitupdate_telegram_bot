@@ -5,6 +5,7 @@ from telegram.ext import MessageHandler, Filters
 import configparser
 import logging
 import subprocess
+#import bus_timing as bt
 
 config = configparser.ConfigParser()
 config.read("bot.ini")
@@ -22,3 +23,11 @@ def update_bot(update, context):
     subprocess.call("update_bot.sh")
     exit()
     pass
+
+
+start_handler = CommandHandler("start", start)
+update_handler = CommandHandler("update", update_bot)
+dispatcher.add_handler(start_handler)
+dispatcher.add_handler(update_handler)
+
+updater.start_polling()
