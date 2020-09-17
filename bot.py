@@ -4,13 +4,13 @@ from telegram.ext import MessageHandler, Filters
 
 import configparser
 import logging
-import subprocess
+import os
 #import bus_timing as bt
 
 config = configparser.ConfigParser()
 config.read("bot.ini")
 
-updater = Updater(token=token, use_context="true")
+updater = Updater(token=config["KEYS"]["BOT_TOKEN"], use_context="true")
 dispatcher = updater.dispatcher
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
@@ -20,9 +20,13 @@ def start(update, context):
     print(update.effective_user.id)
 
 def update_bot(update, context):
-    subprocess.call("update_bot.sh")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="Updating now, going for a nap")
+    pid = os.fork()
+    if pid == 0:
+        os.system("./update_bot.sh")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="i'm still running!")
     exit()
-    pass
+    print("i'm still running!")
 
 
 start_handler = CommandHandler("start", start)
