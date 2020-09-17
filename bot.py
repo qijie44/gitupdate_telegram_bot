@@ -5,6 +5,7 @@ from telegram.ext import MessageHandler, Filters
 import configparser
 import logging
 import os
+import sys
 #import bus_timing as bt
 
 config = configparser.ConfigParser()
@@ -24,9 +25,9 @@ def update_bot(update, context):
     pid = os.fork()
     if pid == 0:
         os.system("./update_bot.sh")
+    updater.stop()
+    sys.exit()
     context.bot.send_message(chat_id=update.effective_chat.id, text="i'm still running!")
-    exit()
-    print("i'm still running!")
 
 
 start_handler = CommandHandler("start", start)
