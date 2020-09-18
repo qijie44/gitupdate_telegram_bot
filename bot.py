@@ -27,12 +27,18 @@ def update_bot(update, context):
         os.system("./update_bot.sh")
     updater.stop()
     sys.exit()
-    context.bot.send_message(chat_id=update.effective_chat.id, text="i'm still running!")
+    
+def bus_timing(update, context):
+    bus_stop = context.args[0]
+    data = bs.bus_timing(bus_stop)
+    context.bot.send_message(chat_id=update.effective_chat.id, text=data)
 
 
 start_handler = CommandHandler("start", start)
 update_handler = CommandHandler("update", update_bot)
+bus_timing_handler = CommandHandler("bus", bus_timing)
 dispatcher.add_handler(start_handler)
 dispatcher.add_handler(update_handler)
+dispatcher.add_handler(bus_timing_handler)
 
 updater.start_polling()
