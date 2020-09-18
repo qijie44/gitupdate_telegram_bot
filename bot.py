@@ -6,7 +6,7 @@ import configparser
 import logging
 import os
 import sys
-#import bus_timing as bt
+import bus_timing as bs
 
 config = configparser.ConfigParser()
 config.read("bot.ini")
